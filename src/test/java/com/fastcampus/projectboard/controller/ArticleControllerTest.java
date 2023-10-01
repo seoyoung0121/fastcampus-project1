@@ -19,7 +19,7 @@ class ArticleControllerTest {
     public ArticleControllerTest(@Autowired MockMvc mvc) {
         this.mvc = mvc;
     }
-    @Disabled("구현 중") //테스트 실패로 빌드가 안될 수 있기에
+    //@Disabled("구현 중") //테스트 실패로 빌드가 안될 수 있기에
     @DisplayName("[view][get] 게시글 리스트 페이지 - 정상 호출")
     @Test
     public void givenNothing_whenRequestingArticlesView_thenReturnsArticlesView() throws Exception {
@@ -28,7 +28,7 @@ class ArticleControllerTest {
         //when&then
         mvc.perform(MockMvcRequestBuilders.get("/articles"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.content().contentType(MediaType.TEXT_HTML))
+                .andExpect(MockMvcResultMatchers.content().contentTypeCompatibleWith(MediaType.TEXT_HTML))
                 .andExpect(MockMvcResultMatchers.view().name("articles/index"))
                 .andExpect(MockMvcResultMatchers.model().attributeExists("articles"));
     }
@@ -41,7 +41,7 @@ class ArticleControllerTest {
         //when&then
         mvc.perform(MockMvcRequestBuilders.get("/articles/1"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.content().contentType(MediaType.TEXT_HTML))
+                .andExpect(MockMvcResultMatchers.content().contentTypeCompatibleWith(MediaType.TEXT_HTML))
                 .andExpect(MockMvcResultMatchers.view().name("articles/detail"))
                 .andExpect(MockMvcResultMatchers.model().attributeExists("article"))
                 .andExpect(MockMvcResultMatchers.model().attributeExists("articleComments"));
@@ -55,7 +55,7 @@ class ArticleControllerTest {
         //when&then
         mvc.perform(MockMvcRequestBuilders.get("/articles/search"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.content().contentType(MediaType.TEXT_HTML))
+                .andExpect(MockMvcResultMatchers.content().contentTypeCompatibleWith(MediaType.TEXT_HTML))
                 .andExpect(MockMvcResultMatchers.model().attributeExists("articles/search"));
     }
     @Disabled("구현 중")
@@ -67,7 +67,7 @@ class ArticleControllerTest {
         //when&then
         mvc.perform(MockMvcRequestBuilders.get("/articles/search-hashtag"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.content().contentType(MediaType.TEXT_HTML))
+                .andExpect(MockMvcResultMatchers.content().contentTypeCompatibleWith(MediaType.TEXT_HTML))
                 .andExpect(MockMvcResultMatchers.model().attributeExists("articles/search-hashtag"));
     }
 }
