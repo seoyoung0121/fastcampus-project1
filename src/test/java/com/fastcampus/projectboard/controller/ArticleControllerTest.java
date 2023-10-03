@@ -1,10 +1,12 @@
 package com.fastcampus.projectboard.controller;
 
+import com.fastcampus.projectboard.config.SecurityConfig;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -12,6 +14,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import static org.junit.jupiter.api.Assertions.*;
 @DisplayName("view controller - 게시글")
+@Import(SecurityConfig.class)
 @WebMvcTest(ArticleController.class) //()이러면 해당 컨트롤러만 읽어옴, 아니면 전부 읽어옴
 class ArticleControllerTest {
     private final MockMvc mvc;
@@ -19,6 +22,8 @@ class ArticleControllerTest {
     public ArticleControllerTest(@Autowired MockMvc mvc) {
         this.mvc = mvc;
     }
+
+
     //@Disabled("구현 중") //테스트 실패로 빌드가 안될 수 있기에
     @DisplayName("[view][get] 게시글 리스트 페이지 - 정상 호출")
     @Test
