@@ -10,7 +10,7 @@ import java.util.Objects;
 import java.util.Set;
 
 @Getter
-@ToString
+@ToString(callSuper = true)
 @Table(indexes = { //검색 넣을 곳
         @Index(columnList = "title"),
         @Index(columnList = "hashtag"),
@@ -23,28 +23,28 @@ public class Article extends AuditingFields{
     @GeneratedValue(strategy = GenerationType.IDENTITY) //자동으로 값 안만들어주게
     private Long id; //primary key가 된다.
 
+    @Setter @ManyToOne(optional = false) private UserAccount userAccount; // 유저 정보 (ID)
     @Setter @Column(nullable = false) private String title;
     @Setter @Column(nullable = false, length = 10000) private String content;
 
     @Setter private String hashtag;
 
     @ToString.Exclude // article comments 엔 또 article 연결되어 있고 순환되기에 끊어야함
-    @OrderBy("id")
+    @OrderBy("createdAt DESC")
     @OneToMany(mappedBy = "article", cascade = CascadeType.ALL)
     private final Set<ArticleComment> articleComments=new LinkedHashSet<>();
 
     protected Article(){
     }
 
-    private Article(String title, String content, String hashtag) {
+    private Article(UserAccount userAccount, String title, String content, String hashtag) {
+        this.userAccount = userAccount;
         this.title = title;
         this.content = content;
         this.hashtag = hashtag;
     }
-    public static Article of(String title, String content, String hashtag) {
-        //도메인 아티클을 생성하고자 할 때는 이러한 값 필요하다는 가이드
-        //객체 생성 메서드를 만드는 static factory method임
-        return new Article(title, content, hashtag);
+    public static Article of(UserAccount userAccount, String title, String content, String hashtag) {
+        return new Article(userAccount, title, content, hashtag);
     }
 
     //동등성 검증
