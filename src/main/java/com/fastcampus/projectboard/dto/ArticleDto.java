@@ -9,7 +9,7 @@ public record ArticleDto(
         String hashtag,
         LocalDateTime createdAt,
         String createdBy
-) implements Serializable{
+){
     public static ArticleDto of(String title, String content, String hashtag, LocalDateTime createdAt, String createdBy) {
         return new ArticleDto(title, content,  hashtag, createdAt, createdBy);
     }
