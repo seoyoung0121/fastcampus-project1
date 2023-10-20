@@ -18,7 +18,11 @@ public interface ArticleRepository extends
         QuerydslPredicateExecutor<Article>, //기본 검색기능 추가해줌
         QuerydslBinderCustomizer<QArticle> //이렇게 Q클래스 넣어야함
 {
-    Page<Article> findByTitle(String title, Pageable pageable);
+    Page<Article> findByTitleContaining(String title, Pageable pageable);
+    Page<Article> findByContentContaining(String content, Pageable pageable);
+    Page<Article> findByUserAccount_UserIdContaining(String userId, Pageable pageable);
+    Page<Article> findByUserAccount_NicknameContaining(String nickname, Pageable pageable);
+    Page<Article> findByHashtagContaining(String hashtag, Pageable pageable);
     @Override
     default void customize(QuerydslBindings bindings, QArticle root){
         bindings.excludeUnlistedProperties(true); //list 안한거는 검색기능 뺌
