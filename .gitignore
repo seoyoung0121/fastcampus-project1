@@ -18,6 +18,9 @@
 # AWS User-specific
 .idea/**/aws.xml
 
+### JPA Buddy
+.jpb/
+
 # Generated files
 .idea/**/contentModel.xml
 
