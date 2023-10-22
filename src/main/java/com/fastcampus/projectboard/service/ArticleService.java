@@ -13,6 +13,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
+import java.util.List;
+
 @Slf4j //로깅하는 롬복의 애노테이션
 @RequiredArgsConstructor
 @Service
@@ -72,5 +74,21 @@ public class ArticleService {
 
     public void deleteArticle(long articleId) {
         articleRepository.deleteById(articleId);
+    }
+
+    @Transactional(readOnly = true)
+    public Page<ArticleDto> searchArticlesViaHashtag(String hashtag, Pageable pageable) {
+        if(hashtag==null||hashtag.isBlank()){
+            return Page.empty(pageable);
+        }
+        return articleRepository.findByHashtagContaining(hashtag, pageable).map(ArticleDto::from);
+    }
+
+    public long getArticleCount() {
+        return articleRepository.count();
+    }
+
+    public List<String> getHashtags() {
+        return articleRepository.findAllDistinctHashtags();
     }
 }
