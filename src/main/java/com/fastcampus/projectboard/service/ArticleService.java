@@ -20,6 +20,7 @@ import java.util.List;
 
 @Slf4j //로깅하는 롬복의 애노테이션
 @RequiredArgsConstructor
+@Transactional
 @Service
 public class ArticleService {
     private final ArticleRepository articleRepository;
@@ -57,6 +58,7 @@ public class ArticleService {
         UserAccount userAccount = userAccountRepository.getReferenceById(dto.userAccountDto().userId());
         articleRepository.save(dto.toEntity(userAccount));
     }
+
 
     public void updateArticle(Long articleId, ArticleDto dto) {
         try{

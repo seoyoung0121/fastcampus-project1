@@ -51,8 +51,8 @@ public class Article extends AuditingFields{
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Article article)) return false; //pattern variable 방식
-        return id != null && id.equals(article.id);
+        if (!(o instanceof Article that)) return false;
+        return id != null && id.equals(that.getId());
         //db에 아직 영속화 되지 않은 entity는 모든 동등성 검사 탈락한다.
         //왜냐면 id가 부여되지 않은게 영속화 x라는 뜻
     }
