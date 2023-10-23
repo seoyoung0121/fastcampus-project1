@@ -1,4 +1,4 @@
-package com.fastcampus.projectboard.domain.type;
+package com.fastcampus.projectboard.domain.constant;
 import lombok.Getter;
 public enum SearchType {
     TITLE("제목"),
