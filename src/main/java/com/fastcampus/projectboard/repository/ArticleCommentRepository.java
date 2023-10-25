@@ -27,4 +27,5 @@ public interface ArticleCommentRepository extends
         bindings.bind(root.createdBy).first(StringExpression::containsIgnoreCase);
     }
 
+    void deleteByIdAndUserAccount_UserId(Long articleCommentId, String userId);
 }
