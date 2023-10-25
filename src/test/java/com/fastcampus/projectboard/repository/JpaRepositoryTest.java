@@ -7,10 +7,15 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.context.TestConfiguration;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
 import com.fastcampus.projectboard.domain.UserAccount;
+import org.springframework.data.domain.AuditorAware;
+import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.*;
 // @ActiveProfiles("testdb") 이거하고 Application.yaml에
@@ -23,7 +28,7 @@ import static org.assertj.core.api.Assertions.*;
   test.database.replace: none //자동으로 임의의 testdb 불러오지않고 설정한 db 불러옴
 이러면 h2에서 mysql과 가까운 환경으로 꾸밀 수 있..? */
 @DisplayName("Jpa 연결 테스트")
-@Import(JpaConfig.class)
+@Import(JpaRepositoryTest.TestJpaConfig.class)
 @DataJpaTest
 class JpaRepositoryTest {
     private final ArticleRepository articleRepository;
@@ -99,6 +104,17 @@ class JpaRepositoryTest {
         //Then
         Assertions.assertThat(articleRepository.count()).isEqualTo(previousArticleCount-1);
         Assertions.assertThat(articleCommentRepository.count()).isEqualTo(previousArticleCommentCount-deletedCommentSize);
+    }
+
+    @EnableJpaAuditing
+    @TestConfiguration //test할때만 config
+    public static class TestJpaConfig{
+        @Bean
+        public AuditorAware<String> auditorAware(){
+            return () -> Optional.of("uno");
+        }
+        //시큐리티에 영향받지 않게끔 만들어 줬다.
+
     }
 
 }

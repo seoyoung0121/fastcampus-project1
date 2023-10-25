@@ -65,28 +65,32 @@ public class ArticleService {
             Article article = articleRepository.getReferenceById(articleId);
         //getReferenceById는 findById랑 비슷한데 find는엔티티 조회 쿼리 날려 데이터 필요 안해도 select쿼리 날라감
         //db 가서 꺼내오는거지.. 쿼리 안보내고 레퍼런스만!
-        if(dto.title()!=null){
-            article.setTitle(dto.title());
-        }
-        //record는 getter setter 이미 만들어져있어서 .title해도 나옴!
-        if(dto.content()!=null){
-            article.setContent(dto.content());
-        }
-        article.setHashtag(dto.hashtag());
+            UserAccount userAccount=userAccountRepository.getReferenceById(dto.userAccountDto().userId());
+            if(article.getUserAccount().equals(userAccount)) {
+                if(dto.title()!=null){
+                    article.setTitle(dto.title());
+                }
+                //record는 getter setter 이미 만들어져있어서 .title해도 나옴!
+                if(dto.content()!=null){
+                    article.setContent(dto.content());
+                }
+                article.setHashtag(dto.hashtag());
+            }
+
         //앤 null이어도 되니 if문 안써도됨
         //articleRepository.save(article); 필요 없음 transactional에 의해 트랜지션이 묶여있어
         //끝날때 article 변한거 감지해내고 쿼리 날려서 실행됨
         //근데 dto인데도 감지하나..? 코드 다시 보자 -> 웅 dto 아니고 아티클을 수정하는 거네
         } catch(EntityNotFoundException e){
-            log.warn("업데이트 실패, 게시글 찾을 수 없음 - dto: {}", dto);
+            log.warn("업데이트 실패, 게시글을 수정하는데 필요한 정보를 찾을 수 없음 - dto: {}", e.getLocalizedMessage());
             //string interpolation 이 +보다 나음, 실행 안할 때 메모리 부담 덜음
         }
 
 
     }
 
-    public void deleteArticle(long articleId) {
-        articleRepository.deleteById(articleId);
+    public void deleteArticle(long articleId, String userId) {
+        articleRepository.deleteByIdAndUserAccount_UserId(articleId, userId);
     }
 
     @Transactional(readOnly = true)
